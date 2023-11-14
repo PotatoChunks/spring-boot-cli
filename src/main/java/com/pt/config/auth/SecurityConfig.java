@@ -34,10 +34,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 将自定义provider注入
         builderConfigProvider(http);
         http.authorizeRequests()
-                .anyRequest().permitAll()
+                .anyRequest().permitAll();
                 //.requestMatchers(Endpoint)
                 //.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
-                .anyRequest().authenticated();//所有资源 都必须登录才能访问
+                //.anyRequest().authenticated();//所有资源 都必须登录才能访问
     }
 
     private void builderConfigProvider(HttpSecurity http){
