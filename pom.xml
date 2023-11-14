@@ -29,12 +29,6 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!--mybatisPlus-->
-            <dependency>
-                <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus-boot-starter</artifactId>
-                <version>3.4.3</version>
-            </dependency>
             <!--MyBatis分页插件-->
             <dependency>
                 <groupId>com.github.pagehelper</groupId>

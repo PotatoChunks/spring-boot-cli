@@ -36,7 +36,7 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
                 //客户端的标识 client_id
                 .withClient("my-client")
                 //客户端秘钥
-                .secret(passwordEncoder.encode(""))
+                .secret(passwordEncoder.encode("123456"))
                 //满足认证类型条件的 都通过认证
                 .scopes("all")
                 //定义允许认证类型 允许那些数据进行认证
@@ -67,7 +67,7 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
      * 需要生成一个自己的签名证书
      * https://dzone.com/articles/creating-self-signed-certificate
      * */
-    @Bean
+    /*@Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setKeyPair(keyPair());
@@ -78,7 +78,7 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
         //从classpath下的证书中获取秘钥对
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "123456789".toCharArray());
         return keyStoreKeyFactory.getKeyPair("jwt", "123456789".toCharArray());
-    }
+    }*/
 
 
     // 添加自定义OAuth2模式
