@@ -32,7 +32,8 @@
 
         <javaModelGenerator targetPackage="com.pt.db.model" targetProject="src/main/java"/>
 
-        <sqlMapGenerator targetPackage="com.pt.db.mapper" targetProject="src/main/resources"/>
+        <!--mapper生成的xml文件-->
+        <sqlMapGenerator targetPackage="mappers" targetProject="src/main/resources"/>
 
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.pt.db.mapper"
                              targetProject="src/main/java"/>

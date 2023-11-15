@@ -5,6 +5,7 @@ import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
+import org.mybatis.generator.api.dom.java.InnerClass;
 import org.mybatis.generator.internal.DefaultCommentGenerator;
 import org.mybatis.generator.internal.util.StringUtility;
 
@@ -18,7 +19,6 @@ public class CommentGenerator extends DefaultCommentGenerator {
     private boolean addRemarkComments = false;
     private static final String EXAMPLE_SUFFIX="Example";
     private static final String MAPPER_SUFFIX="Mapper";
-    //private static final String API_MODEL_PROPERTY_FULL_CLASS_NAME="io.swagger.annotations.ApiModelProperty";
 
     /**
      * 设置用户配置的参数
@@ -69,6 +69,8 @@ public class CommentGenerator extends DefaultCommentGenerator {
         //只在model中添加swagger注解类的导入
         if(!compilationUnit.getType().getFullyQualifiedName().contains(MAPPER_SUFFIX)&&!compilationUnit.getType().getFullyQualifiedName().contains(EXAMPLE_SUFFIX)){
             //compilationUnit.addImportedType(new FullyQualifiedJavaType(API_MODEL_PROPERTY_FULL_CLASS_NAME));
+        }
+        if (compilationUnit.getType().getFullyQualifiedName().contains(MAPPER_SUFFIX)) {
         }
     }
 }

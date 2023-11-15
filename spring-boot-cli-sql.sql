@@ -23,8 +23,19 @@ DROP TABLE IF EXISTS `ums_member_user_info`;
 CREATE TABLE IF NOT EXISTS `ums_member_user_info` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '用户名',
+  `phone` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '电话',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '用户表id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户基础信息表';
+
+-- 导出  表 my_demo_cli.ums_member_user 结构
+DROP TABLE IF EXISTS `ums_member_user`;
+CREATE TABLE IF NOT EXISTS `ums_member_user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_info_id` bigint(20) DEFAULT NULL COMMENT '用户信息表id',
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '密码',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='用户表';
 
 -- 数据导出被取消选择。
 

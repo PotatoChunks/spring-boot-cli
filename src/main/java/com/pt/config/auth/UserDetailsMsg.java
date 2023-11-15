@@ -16,7 +16,8 @@ import java.util.List;
 public class UserDetailsMsg implements UserDetails {
 
     private Long id;
-    private String username;
+    //唯一id
+    private String userId;
     private String password;
     //状态
     private Boolean enabled;
@@ -31,10 +32,10 @@ public class UserDetailsMsg implements UserDetails {
 
     //调用构造方法赋值
     //status:1->启用；0->禁用；
-    public UserDetailsMsg(Long id, String username, String password, Integer status, String clientId, List<String> rolesList){
+    public UserDetailsMsg(Long id, String userId, String password, Integer status, String clientId, List<String> rolesList){
         if (status == null) status = 0;
         this.setId(id);
-        this.setUsername(username);
+        this.setUserId(userId);
         this.setPassword(password);
         this.setEnabled(status == 1);
         this.setClientId(clientId);
@@ -57,7 +58,7 @@ public class UserDetailsMsg implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.username;
+        return this.userId;
     }
 
     //是否没有到期
@@ -72,6 +73,7 @@ public class UserDetailsMsg implements UserDetails {
         return true;
     }
 
+    //凭证过期
     @Override
     public boolean isCredentialsNonExpired() {
         return true;

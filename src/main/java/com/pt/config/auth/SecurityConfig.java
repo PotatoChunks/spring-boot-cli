@@ -33,8 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // 将自定义provider注入
         builderConfigProvider(http);
+
         http.authorizeRequests()
-                .anyRequest().permitAll();
+                .antMatchers("/**").permitAll();
                 //.anyRequest().authenticated();//所有资源 都必须登录才能访问
     }
 
