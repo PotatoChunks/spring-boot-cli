@@ -1,8 +1,11 @@
 package com.pt.service.app.ums.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.pt.db.mapper.SmsMemberRoleRelationMapper;
 import com.pt.db.mapper.UmsMemberUserInfoMapper;
 import com.pt.db.mapper.UmsMemberUserMapper;
+import com.pt.db.model.SmsMemberRoleRelation;
+import com.pt.db.model.SmsMemberRoleRelationExample;
 import com.pt.db.model.UmsMemberUser;
 import com.pt.db.model.UmsMemberUserExample;
 import com.pt.dto.contant.UserMsgDto;
@@ -19,6 +22,8 @@ public class UmsMemberServiceImpl implements UmsMemberService {
     private UmsMemberUserMapper memberUserMapper;
     @Autowired
     private UmsMemberUserInfoMapper memberUserInfoMapper;
+    @Autowired
+    private SmsMemberRoleRelationMapper memberRoleRelationMapper;
 
 
     public List<UmsMemberUser> getUserList(Integer pageNum,Integer pageSize){
@@ -42,6 +47,12 @@ public class UmsMemberServiceImpl implements UmsMemberService {
                 .setPassword(umsMemberUser.getPassword())
                 .setStatus(umsMemberUser.getStatus())
                 .setUserCode(umsMemberUser.getUserCode());
+
+        SmsMemberRoleRelationExample memberRoleRelationExample = new SmsMemberRoleRelationExample();
+        memberRoleRelationExample.createCriteria().andRelationTypeEqualTo(2).andMemberIdEqualTo(umsMemberUser.getId());
+        //用户身份关联
+        List<SmsMemberRoleRelation> smsMemberRoleRelations = memberRoleRelationMapper.selectByExample(memberRoleRelationExample);
+        //没有身份进行创建 并绑定
 
         //查询权限
         // userDto.setRoles(CollUtil.toList("前台会员"));
