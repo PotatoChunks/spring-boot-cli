@@ -35,8 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         builderConfigProvider(http);
         http.authorizeRequests()
                 .anyRequest().permitAll();
-                //.requestMatchers(Endpoint)
-                //.requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 //.anyRequest().authenticated();//所有资源 都必须登录才能访问
     }
 

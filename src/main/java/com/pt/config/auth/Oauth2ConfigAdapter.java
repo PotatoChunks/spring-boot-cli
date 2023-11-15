@@ -13,6 +13,8 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
@@ -28,6 +30,7 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
 
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenEnhancer jwtTokenEnhancer;
 
     //定义客户端可以携带那些信息进行认证
     @Override
@@ -51,8 +54,15 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         addAutoOauth2Granter(endpoints);
+        //内容增强器
+        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+        //多个内容增强器
+        List<TokenEnhancer> delegates = new ArrayList<>();
+        delegates.add(jwtTokenEnhancer);
+        enhancerChain.setTokenEnhancers(delegates); //配置JWT的内容增强器
         //
-        endpoints.authenticationManager(authenticationManager);
+        endpoints.authenticationManager(authenticationManager)
+                .tokenEnhancer(enhancerChain);
     }
 
     //定义 公开认证的地址
