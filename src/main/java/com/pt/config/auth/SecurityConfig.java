@@ -1,5 +1,8 @@
 package com.pt.config.auth;
 
+import com.pt.config.auth.granter.MyPasswordAuthenticationProvide;
+import com.pt.service.app.ums.UmsMemberService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,9 +12,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private HttpServletRequest request;
+    @Autowired
+    private UmsMemberService memberService;
 
     //方法返回的对象为后续的oauth2的配置提供服务
     @Bean
@@ -41,9 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private void builderConfigProvider(HttpSecurity http){
         //自定义验证注入类
-
-
-        //http.authenticationProvider(quickLoginAuthenticationProvider);
+        //账号密码登录
+        MyPasswordAuthenticationProvide passwordAuthenticationProvide = new MyPasswordAuthenticationProvide(request,memberService);
+        http.authenticationProvider(passwordAuthenticationProvide);
 
     }
 

@@ -1,9 +1,9 @@
 package com.pt.config.auth;
 
+import com.pt.config.auth.granter.MyPasswordGranter;
+import com.pt.dto.contant.MyConstant;
 import lombok.AllArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -15,10 +15,7 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
-import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,19 +28,21 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenEnhancer jwtTokenEnhancer;
+    //用户信息
+    private final UserDetailsServiceImpl userDetailsService;
 
     //定义客户端可以携带那些信息进行认证
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
                 //客户端的标识 client_id
-                .withClient("my-client")
+                .withClient(MyConstant.MY_APP_CLIENT)
                 //客户端秘钥
                 .secret(passwordEncoder.encode("123456"))
                 //满足认证类型条件的 都通过认证
                 .scopes("all")
                 //定义允许认证类型 允许那些数据进行认证
-                .authorizedGrantTypes("authorization_code", "refresh_token", "password")
+                .authorizedGrantTypes("authorization_code", "refresh_token", "my_password")
                 //token过期时间7天
                 .accessTokenValiditySeconds(3600*24*7)
                 //刷新token时间15天
@@ -62,6 +61,7 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
         enhancerChain.setTokenEnhancers(delegates); //配置JWT的内容增强器
         //
         endpoints.authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsService)
                 .tokenEnhancer(enhancerChain);
     }
 
@@ -95,6 +95,7 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
     private void addAutoOauth2Granter(AuthorizationServerEndpointsConfigurer endpoints){
         List<TokenGranter> granters = new ArrayList<>(Collections.singletonList(endpoints.getTokenGranter()));
 
+        granters.add(new MyPasswordGranter(authenticationManager,endpoints.getTokenServices(),endpoints.getClientDetailsService(),endpoints.getOAuth2RequestFactory()));
 
         CompositeTokenGranter compositeTokenGranter = new CompositeTokenGranter(granters);
         endpoints.tokenGranter(compositeTokenGranter);

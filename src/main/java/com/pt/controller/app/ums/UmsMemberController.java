@@ -1,5 +1,6 @@
 package com.pt.controller.app.ums;
 
+import com.pt.api.common.CommonPage;
 import com.pt.api.common.CommonResult;
 import com.pt.db.model.UmsMemberUser;
 import com.pt.service.app.ums.UmsMemberService;
@@ -25,10 +26,10 @@ public class UmsMemberController {
 
     @RequestMapping(value = "/get/getUserList", method = RequestMethod.GET)
     @ResponseBody
-    public CommonResult getUserList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
+    public CommonResult<CommonPage<UmsMemberUser>> getUserList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize){
         List<UmsMemberUser> userList = memberService.getUserList(pageNum, pageSize);
 
-        return CommonResult.success(userList);
+        return CommonResult.success(CommonPage.restPage(userList));
     }
 
 

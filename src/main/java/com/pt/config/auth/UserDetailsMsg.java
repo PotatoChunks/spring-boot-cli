@@ -1,5 +1,6 @@
 package com.pt.config.auth;
 
+import com.pt.dto.contant.UserMsgDto;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -42,6 +43,18 @@ public class UserDetailsMsg implements UserDetails {
         if (rolesList != null) {
             authorities = new ArrayList<>();
             for (String rol : rolesList) authorities.add(new SimpleGrantedAuthority(rol));
+        }
+    }
+
+    public UserDetailsMsg(UserMsgDto userMsgDto){
+        this.setId(userMsgDto.getId());
+        this.setUserId(userMsgDto.getUserCode());
+        this.setPassword(userMsgDto.getPassword());
+        this.setEnabled(userMsgDto.getStatus() == 1);
+        this.setClientId(userMsgDto.getClientId());
+        if (userMsgDto.getRoles() != null && userMsgDto.getRoles().size() > 0) {
+            authorities = new ArrayList<>();
+            for (String rol : userMsgDto.getRoles()) authorities.add(new SimpleGrantedAuthority(rol));
         }
     }
 
