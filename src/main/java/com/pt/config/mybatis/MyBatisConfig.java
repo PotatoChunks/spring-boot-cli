@@ -11,6 +11,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 //自动生成的文件地址和自定义的地址
-@MapperScan({"com.pt.db.mapper"})
+@MapperScan({"com.pt.db.mapper","com.pt.db.model"})
 public class MyBatisConfig {
 }
