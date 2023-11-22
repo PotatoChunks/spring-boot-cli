@@ -15,6 +15,7 @@
     |-- config
     |   |-- auth
     |   |   |-- JwtTokenEnhancer.java
+    |   |   |-- MyResourceServerConfig.java
     |   |   |-- Oauth2ConfigAdapter.java
     |   |   |-- SecurityConfig.java
     |   |   |-- UserDetailsMsg.java
@@ -29,10 +30,6 @@
     |       |-- MyBatisConfig.java
     |-- controller
     |   |-- IndexController.java
-    |   |-- app
-    |       |-- sms
-    |       |-- ums
-    |           |-- UmsMemberController.java
     |-- db
     |   |-- mapper
     |   |   |-- SmsMemberRoleRelationMapper.java
@@ -63,17 +60,16 @@
     |       |-- UserMsgDto.java
     |-- service
         |-- admin
-        |   |-- admin
         |   |-- member
         |       |-- MemberService.java
         |       |-- impl
         |           |-- MemberServiceImpl.java
         |-- app
-            |-- sms
             |-- ums
                 |-- UmsMemberService.java
                 |-- impl
                     |-- UmsMemberServiceImpl.java
+
 
 
 ```
