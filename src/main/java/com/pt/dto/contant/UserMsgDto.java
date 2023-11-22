@@ -14,4 +14,5 @@ public class UserMsgDto {
     private Integer status;
     private String clientId;
     private List<String> roles;
+
 }

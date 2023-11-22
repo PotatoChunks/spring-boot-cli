@@ -101,4 +101,5 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
         endpoints.tokenGranter(compositeTokenGranter);
     }
 
+
 }

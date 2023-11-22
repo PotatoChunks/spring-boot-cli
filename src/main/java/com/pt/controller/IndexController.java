@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping(value = "/",produces = {"application/json;charset=UTF-8"})
+//@RequestMapping(value = "/",produces = {"application/json;charset=UTF-8"})
 public class IndexController {
+
     @Autowired
     private Ip2regionSearcher ip2regionSearcher;
 
@@ -24,6 +25,13 @@ public class IndexController {
         //city城市
         //country国家
         return CommonResult.success(ipInfo);
+    }
+
+    //ip获取地理位置用法
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult testOK(){
+        return CommonResult.success("ok");
     }
 
 }

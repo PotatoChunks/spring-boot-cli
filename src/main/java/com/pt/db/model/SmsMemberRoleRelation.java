@@ -10,7 +10,7 @@ public class SmsMemberRoleRelation implements Serializable {
     private Long roleId;
 
     /**
-     * 1->管理员；2->用户；
+     * 1->用户；2->管理员；
      */
     private Integer relationType;
 

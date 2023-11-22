@@ -22,7 +22,7 @@ public class MyPasswordGranter extends AbstractTokenGranter {
     private final AuthenticationManager authenticationManager;
 
 
-    public MyPasswordGranter(AuthenticationManager authenticationManager,AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
+    public MyPasswordGranter(AuthenticationManager authenticationManager, AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
         this(authenticationManager,tokenServices, clientDetailsService, requestFactory, GRANT_TYPE);
     }
 

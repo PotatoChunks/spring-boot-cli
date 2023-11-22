@@ -4,8 +4,6 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.CompilationUnit;
 import org.mybatis.generator.api.dom.java.Field;
-import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
-import org.mybatis.generator.api.dom.java.InnerClass;
 import org.mybatis.generator.internal.DefaultCommentGenerator;
 import org.mybatis.generator.internal.util.StringUtility;
 
@@ -16,6 +14,7 @@ import java.util.Properties;
  * Created by macro on 2018/4/26.
  */
 public class CommentGenerator extends DefaultCommentGenerator {
+
     private boolean addRemarkComments = false;
     private static final String EXAMPLE_SUFFIX="Example";
     private static final String MAPPER_SUFFIX="Mapper";
@@ -73,4 +72,5 @@ public class CommentGenerator extends DefaultCommentGenerator {
         if (compilationUnit.getType().getFullyQualifiedName().contains(MAPPER_SUFFIX)) {
         }
     }
+
 }
