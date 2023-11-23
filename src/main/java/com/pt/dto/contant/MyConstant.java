@@ -10,4 +10,9 @@ public interface MyConstant {
      */
     String MY_APP_CLIENT = "my-app-client";
 
+    /**
+     * JWT令牌前缀
+     */
+    String JWT_TOKEN_PREFIX = "Bearer ";
+
 }

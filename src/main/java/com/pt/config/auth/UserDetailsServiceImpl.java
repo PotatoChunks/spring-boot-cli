@@ -11,6 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 赋值用户信息实现类
@@ -36,6 +38,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (userMsgDto == null) {
             throw new UsernameNotFoundException("暂无此用户");
         }
+        List<String> rols = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            rols.add("qweweq"+i);
+        }
+        userMsgDto.setRoles(rols);
 
         userMsgDto.setClientId(clientId);
         UserDetailsMsg userDetailsMsg = new UserDetailsMsg(userMsgDto);

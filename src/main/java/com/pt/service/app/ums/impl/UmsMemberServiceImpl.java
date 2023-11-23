@@ -67,14 +67,14 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         userCode = XSSUtils.stripXSS(userCode);
         password = XSSUtils.stripXSS(password);
 
-        //密码加密
-        String encode = passwordEncoder.encode(password);
-
         if (StringUtils.isEmpty(userCode) || StringUtils.isEmpty(password)) return false;
         UmsMemberUserExample umsMemberUserExample = new UmsMemberUserExample();
-        umsMemberUserExample.createCriteria().andUserCodeEqualTo(userCode).andPasswordEqualTo(encode);
-        long userCont = memberUserMapper.countByExample(umsMemberUserExample);
-        return userCont > 0L;
+        umsMemberUserExample.createCriteria().andUserCodeEqualTo(userCode);
+        List<UmsMemberUser> umsMemberUsers = memberUserMapper.selectByExample(umsMemberUserExample);
+        if (umsMemberUsers == null || umsMemberUsers.size() == 0) return false;
+        UmsMemberUser umsMemberUser = umsMemberUsers.get(0);
+
+        return passwordEncoder.matches(password,umsMemberUser.getPassword());
     }
 
 }

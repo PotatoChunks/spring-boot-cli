@@ -47,6 +47,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //http.authorizeRequests()
                 //.antMatchers("/**").permitAll();
         //.anyRequest().authenticated();//所有资源 都必须登录才能访问
+        // 禁止跨域攻击
+        //http.csrf().disable();
+        http
+                .authorizeRequests()
+                .anyRequest()
+                .permitAll()
+                .and()
+                //关闭跨站请求防护
+                .csrf().disable();
     }
 
     private void builderConfigProvider(HttpSecurity http){
