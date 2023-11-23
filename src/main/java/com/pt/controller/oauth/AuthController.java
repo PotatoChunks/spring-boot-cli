@@ -34,7 +34,13 @@ public class AuthController {
                 .setRefreshToken(oAuth2AccessToken.getRefreshToken().getValue())
                 .setExpiresIn(oAuth2AccessToken.getExpiresIn())
                 .setTokenHead(MyConstant.JWT_TOKEN_PREFIX);
-
+        try {
+            System.out.println(oAuth2AccessToken.getValue());
+            //JWSObject parse = JWSObject.parse(oAuth2AccessToken.getValue());
+            //System.out.println(parse);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return CommonResult.success(oauth2TokenDto);
     }
