@@ -1,8 +1,11 @@
 package com.pt.api.common;
 
+import lombok.Data;
+
 /**
  * 接口返回对象
  */
+@Data
 public class CommonResult<T> {
     private long code;
     private String message;
