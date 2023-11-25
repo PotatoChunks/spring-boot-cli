@@ -58,10 +58,15 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
         //多个内容增强器
         List<TokenEnhancer> delegates = new ArrayList<>();
         delegates.add(jwtTokenEnhancer);
+        //delegates.add(accessTokenConverter());
+        //delegates.add(jwtAccessTokenConverter());
         enhancerChain.setTokenEnhancers(delegates); //配置JWT的内容增强器
         //
         endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
+                //.accessTokenConverter(accessTokenConverter())
+                //.tokenStore(jwtTokenStore())
+                //.accessTokenConverter(jwtAccessTokenConverter())
                 .tokenEnhancer(enhancerChain);
     }
 
@@ -73,7 +78,7 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
 
 
     /**
-     * 次方法为用自己的签名证书，去生成token
+     * 此方法为用自己的签名证书，去生成token
      * 需要生成一个自己的签名证书
      * https://dzone.com/articles/creating-self-signed-certificate
      * */
@@ -88,6 +93,21 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
         //从classpath下的证书中获取秘钥对
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "123456789".toCharArray());
         return keyStoreKeyFactory.getKeyPair("jwt", "123456789".toCharArray());
+    }*/
+
+    /**
+     * 用于OAuth2生成的token和JWT生成的token进行一个转换
+     */
+    /*@Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        jwtAccessTokenConverter.setSigningKey("your-signing-key");
+        return jwtAccessTokenConverter;
+    }
+
+    @Bean
+    public TokenStore jwtTokenStore() {
+        return new JwtTokenStore(jwtAccessTokenConverter());
     }*/
 
 

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.Map;
+
 
 @Controller
 @RequestMapping(value = "/oauth", produces = {"application/json;charset=UTF-8"})
@@ -35,7 +37,19 @@ public class AuthController {
                 .setExpiresIn(oAuth2AccessToken.getExpiresIn())
                 .setTokenHead(MyConstant.JWT_TOKEN_PREFIX);
         try {
+            Date expireAt=new Date();
+            /*String sign = JWT.create()
+                    //发行人
+                    .withIssuer("auth0")
+                    //存放数据
+                    .withClaim("username", "admin")
+                    .withClaim("password", "123456")
+                    //过期时间
+                    .withExpiresAt(expireAt)
+                    .sign(Algorithm.HMAC256("123456q"));*/
             System.out.println(oAuth2AccessToken.getValue());
+            System.out.println("============================");
+            //System.out.println(sign);
             //JWSObject parse = JWSObject.parse(oAuth2AccessToken.getValue());
             //System.out.println(parse);
         } catch (Exception e) {

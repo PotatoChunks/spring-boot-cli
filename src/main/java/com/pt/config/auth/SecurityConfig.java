@@ -22,6 +22,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private HttpServletRequest request;
     @Autowired
     private UmsMemberService memberService;
+    //@Autowired
+    //private MyAuthenticationFailHandler myAuthenticationFailHandler;
 
     //方法返回的对象为后续的oauth2的配置提供服务
     @Bean
@@ -49,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //.anyRequest().authenticated();//所有资源 都必须登录才能访问
         // 禁止跨域攻击
         //http.csrf().disable();
+        //http.formLogin().failureHandler(myAuthenticationFailHandler);
         http
                 .authorizeRequests()
                 .anyRequest()
