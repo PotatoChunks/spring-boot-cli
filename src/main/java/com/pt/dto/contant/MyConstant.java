@@ -15,4 +15,14 @@ public interface MyConstant {
      */
     String JWT_TOKEN_PREFIX = "Bearer ";
 
+    /**
+     * admin管理路径
+     */
+    String ADMIN_URL_PATH = "/admin";
+
+    /**
+     * app 管理路径
+     */
+    String APP_URL_PATH = "/app";
+
 }
