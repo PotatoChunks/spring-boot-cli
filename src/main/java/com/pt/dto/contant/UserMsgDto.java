@@ -9,6 +9,7 @@ import java.util.List;
 @Accessors(chain = true)
 public class UserMsgDto {
     private Long id;
+    private String username;
     private String userCode;
     private String password;
     private Integer status;

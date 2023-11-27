@@ -1,5 +1,6 @@
 package com.pt.controller.oauth;
 
+import com.nimbusds.jose.JWSObject;
 import com.pt.api.common.CommonResult;
 import com.pt.dto.Oauth2TokenDto;
 import com.pt.dto.contant.MyConstant;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
-import java.util.Date;
 import java.util.Map;
 
 
@@ -37,21 +37,12 @@ public class AuthController {
                 .setExpiresIn(oAuth2AccessToken.getExpiresIn())
                 .setTokenHead(MyConstant.JWT_TOKEN_PREFIX);
         try {
-            Date expireAt=new Date();
-            /*String sign = JWT.create()
-                    //发行人
-                    .withIssuer("auth0")
-                    //存放数据
-                    .withClaim("username", "admin")
-                    .withClaim("password", "123456")
-                    //过期时间
-                    .withExpiresAt(expireAt)
-                    .sign(Algorithm.HMAC256("123456q"));*/
             System.out.println(oAuth2AccessToken.getValue());
             System.out.println("============================");
             //System.out.println(sign);
-            //JWSObject parse = JWSObject.parse(oAuth2AccessToken.getValue());
-            //System.out.println(parse);
+            JWSObject parse = JWSObject.parse(oAuth2AccessToken.getValue());
+            String userStr = parse.getPayload().toString();
+            System.out.println(userStr);
         } catch (Exception e) {
             e.printStackTrace();
         }

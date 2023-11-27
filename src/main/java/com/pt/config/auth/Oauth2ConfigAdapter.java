@@ -3,6 +3,7 @@ package com.pt.config.auth;
 import com.pt.config.auth.granter.MyPasswordGranter;
 import com.pt.dto.contant.MyConstant;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +16,9 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,14 +63,14 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
         List<TokenEnhancer> delegates = new ArrayList<>();
         delegates.add(jwtTokenEnhancer);
         //delegates.add(accessTokenConverter());
-        //delegates.add(jwtAccessTokenConverter());
+        delegates.add(jwtAccessTokenConverter());
         enhancerChain.setTokenEnhancers(delegates); //配置JWT的内容增强器
         //
         endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
                 //.accessTokenConverter(accessTokenConverter())
-                //.tokenStore(jwtTokenStore())
-                //.accessTokenConverter(jwtAccessTokenConverter())
+                .tokenStore(jwtTokenStore())
+                .accessTokenConverter(jwtAccessTokenConverter())
                 .tokenEnhancer(enhancerChain);
     }
 
@@ -98,7 +102,7 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
     /**
      * 用于OAuth2生成的token和JWT生成的token进行一个转换
      */
-    /*@Bean
+    @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setSigningKey("your-signing-key");
@@ -108,7 +112,7 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
     @Bean
     public TokenStore jwtTokenStore() {
         return new JwtTokenStore(jwtAccessTokenConverter());
-    }*/
+    }/**/
 
 
     // 添加自定义OAuth2模式

@@ -7,6 +7,7 @@ import com.pt.db.mapper.UmsMemberUserInfoMapper;
 import com.pt.db.mapper.UmsMemberUserMapper;
 import com.pt.db.model.UmsMemberUser;
 import com.pt.db.model.UmsMemberUserExample;
+import com.pt.db.model.UmsMemberUserInfo;
 import com.pt.dto.contant.UserMsgDto;
 import com.pt.service.app.ums.UmsMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,11 @@ public class UmsMemberServiceImpl implements UmsMemberService {
         List<UmsMemberUser> umsMemberUsers = memberUserMapper.selectByExample(umsMemberUserExample);
         if (umsMemberUsers == null || umsMemberUsers.size() <= 0) return null;
         UmsMemberUser umsMemberUser = umsMemberUsers.get(0);
+        UmsMemberUserInfo umsMemberUserInfo = memberUserInfoMapper.selectByPrimaryKey(umsMemberUser.getUserInfoId());
 
         UserMsgDto userMsgDto = new UserMsgDto();
         userMsgDto.setId(umsMemberUser.getId())
+                .setUsername(umsMemberUserInfo.getUsername())
                 .setPassword(umsMemberUser.getPassword())
                 .setStatus(umsMemberUser.getStatus())
                 .setUserCode(umsMemberUser.getUserCode());
