@@ -23,3 +23,11 @@ mybatis:
 logging:
   level:
     cn.library.mapper: debug
+
+myconfig:
+  ignore:
+    urls: #配置白名单路径
+      - "/**/*.js"
+      - "/**/*.css"
+      - "/**/*.png"
+      - "/**/*.ico"
