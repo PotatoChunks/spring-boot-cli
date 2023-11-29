@@ -5,6 +5,7 @@ import com.pt.dto.contant.MyConstant;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -16,10 +17,10 @@ import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
-import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -62,15 +63,15 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
         //多个内容增强器
         List<TokenEnhancer> delegates = new ArrayList<>();
         delegates.add(jwtTokenEnhancer);
-        //delegates.add(accessTokenConverter());
-        delegates.add(jwtAccessTokenConverter());
+        delegates.add(accessTokenConverter());
+        //delegates.add(jwtAccessTokenConverter());
         enhancerChain.setTokenEnhancers(delegates); //配置JWT的内容增强器
         //
         endpoints.authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
-                //.accessTokenConverter(accessTokenConverter())
-                .tokenStore(jwtTokenStore())
-                .accessTokenConverter(jwtAccessTokenConverter())
+                .accessTokenConverter(accessTokenConverter())
+                //.tokenStore(jwtTokenStore())
+                //.accessTokenConverter(jwtAccessTokenConverter())
                 .tokenEnhancer(enhancerChain);
     }
 
@@ -84,9 +85,12 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
     /**
      * 此方法为用自己的签名证书，去生成token
      * 需要生成一个自己的签名证书
+     * 命令教程
      * https://dzone.com/articles/creating-self-signed-certificate
+     * 参数说明
+     * https://zhuanlan.zhihu.com/p/508886081
      * */
-    /*@Bean
+    @Bean
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
         jwtAccessTokenConverter.setKeyPair(keyPair());
@@ -95,24 +99,24 @@ public class Oauth2ConfigAdapter extends AuthorizationServerConfigurerAdapter {
     @Bean
     public KeyPair keyPair() {
         //从classpath下的证书中获取秘钥对
-        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "123456789".toCharArray());
-        return keyStoreKeyFactory.getKeyPair("jwt", "123456789".toCharArray());
-    }*/
+        KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(new ClassPathResource("mykeystore.jks"), "123456789".toCharArray());
+        return keyStoreKeyFactory.getKeyPair("servercert", "123456789".toCharArray());
+    }
 
     /**
      * 用于OAuth2生成的token和JWT生成的token进行一个转换
      */
-    @Bean
+    /*@Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
-        jwtAccessTokenConverter.setSigningKey("your-signing-key");
+        jwtAccessTokenConverter.setSigningKey( Base64.getEncoder().encodeToString("secret".getBytes(StandardCharsets.UTF_8)) );
         return jwtAccessTokenConverter;
     }
 
     @Bean
     public TokenStore jwtTokenStore() {
         return new JwtTokenStore(jwtAccessTokenConverter());
-    }/**/
+    }*/
 
 
     // 添加自定义OAuth2模式

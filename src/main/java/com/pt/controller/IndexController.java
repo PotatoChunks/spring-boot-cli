@@ -24,14 +24,10 @@ public class IndexController {
         //province省份
         //city城市
         //country国家
+        int a = 1;
+        a = a/0;
+        System.out.println(a);
         return CommonResult.success(ipInfo);
-    }
-
-    //ip获取地理位置用法
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    @ResponseBody
-    public CommonResult testOK(){
-        return CommonResult.success("ok");
     }
 
 }
