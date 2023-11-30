@@ -1,7 +1,7 @@
 package com.pt.controller.oauth;
 
-import com.nimbusds.jose.JWSObject;
 import com.pt.api.common.CommonResult;
+import com.pt.api.http.AESUtils;
 import com.pt.dto.Oauth2TokenDto;
 import com.pt.dto.contant.MyConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,20 +32,11 @@ public class AuthController {
         OAuth2AccessToken oAuth2AccessToken = tokenEndpoint.postAccessToken(principal, oauth2TokenReq).getBody();
         if (oAuth2AccessToken == null) return CommonResult.failed("账号错误");
         Oauth2TokenDto oauth2TokenDto = new Oauth2TokenDto()
-                .setToken(oAuth2AccessToken.getValue())
+                // token 加密
+                .setToken( AESUtils.encrypt(oAuth2AccessToken.getValue()) )
                 .setRefreshToken(oAuth2AccessToken.getRefreshToken().getValue())
                 .setExpiresIn(oAuth2AccessToken.getExpiresIn())
                 .setTokenHead(MyConstant.JWT_TOKEN_PREFIX);
-        try {
-            System.out.println(oAuth2AccessToken.getValue());
-            System.out.println("============================");
-            //System.out.println(sign);
-            JWSObject parse = JWSObject.parse(oAuth2AccessToken.getValue());
-            String userStr = parse.getPayload().toString();
-            System.out.println(userStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         return CommonResult.success(oauth2TokenDto);
     }

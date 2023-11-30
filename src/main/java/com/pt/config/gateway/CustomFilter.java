@@ -1,9 +1,9 @@
 package com.pt.config.gateway;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.nimbusds.jose.JWSObject;
 import com.pt.api.common.CommonResult;
+import com.pt.api.http.AESUtils;
 import com.pt.dto.contant.MyConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 自定义过滤器
@@ -56,6 +55,15 @@ public class CustomFilter implements Filter {
         //去掉Bearer 前缀
         String realToken = token.replace(MyConstant.JWT_TOKEN_PREFIX, "");
 
+        //进行AES解密
+        realToken = AESUtils.decrypt(realToken);
+
+        if (realToken == null || "".equals(realToken)) {
+            //不正确
+            noTokenResSend(response);
+            return;
+        }
+
         //解析jwt
         JWSObject jwtObject;
         try {
@@ -70,11 +78,19 @@ public class CustomFilter implements Filter {
             return;
         }
         String userStr = jwtObject.getPayload().toString();
-        System.out.println(userStr);
-        System.out.println();
-        TypeReference<Map<String, String>> typeReference = new TypeReference<Map<String, String>>() {};
-        Map<String, String> userMsg = JSONObject.parseObject(userStr, typeReference.getType());
-        System.out.println(userMsg);
+        //TypeReference<Map<String, String>> typeReference = new TypeReference<Map<String, String>>() {};
+        //Map<String, String> userMsg = JSONObject.parseObject(userStr, typeReference.getType());
+        UserMsgDetails userMsgDetails = JSONObject.parseObject(userStr, UserMsgDetails.class);
+        //身份解密
+        String decrypt = AESUtils.decrypt(userMsgDetails.getJtc());
+        String jtc = userMsgDetails.getClient_id() + userMsgDetails.getUser_code() + String.join(",", userMsgDetails.getAuthorities());
+        //身份异常
+        if (decrypt == null || !decrypt.equals(jtc)) {
+            noTokenResSend(response);
+            return;
+        }
+        System.out.println("token ============");
+        System.out.println("身份验证成功进行下一步");
 
         //验证身份
         //如果是管理员 需要验证管理员的资源地址
