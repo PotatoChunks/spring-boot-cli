@@ -65,7 +65,7 @@ public class CustomFilter implements Filter {
         }
 
         //解析jwt
-        JWSObject jwtObject;
+        JWSObject jwtObject = null;
         try {
             jwtObject = JWSObject.parse(realToken);
         } catch (ParseException e) {
@@ -89,8 +89,10 @@ public class CustomFilter implements Filter {
             noTokenResSend(response);
             return;
         }
-        System.out.println("token ============");
-        System.out.println("身份验证成功进行下一步");
+        String clientId = userMsgDetails.getClient_id();
+        if (clientId.equals(MyConstant.MY_APP_CLIENT)) {
+            //app用户
+        }
 
         //验证身份
         //如果是管理员 需要验证管理员的资源地址
