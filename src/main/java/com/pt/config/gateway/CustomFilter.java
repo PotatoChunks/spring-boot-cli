@@ -90,8 +90,10 @@ public class CustomFilter implements Filter {
             return;
         }
         String clientId = userMsgDetails.getClient_id();
-        if (clientId.equals(MyConstant.MY_APP_CLIENT)) {
-            //app用户
+        //app用户 访问管理路径
+        if (clientId.equals(MyConstant.MY_APP_CLIENT) && pathMatcher.match(MyConstant.ADMIN_URL_PATH + "/**", requestURI)) {
+            noTokenResSend(response,"身份错误");
+            return;
         }
 
         //验证身份
@@ -110,8 +112,15 @@ public class CustomFilter implements Filter {
     public void destroy() {}
 
     //token异常 返回的信息
-    private void noTokenResSend(ServletResponse response) throws IOException {
+    private void noTokenResSend(ServletResponse response,String errMsg) throws IOException {
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(JSONObject.toJSONString(CommonResult.unauthorized("未登陆")));
+        if (errMsg == null) {
+            response.getWriter().write(JSONObject.toJSONString(CommonResult.unauthorized("未登陆")));
+        }else {
+            response.getWriter().write(JSONObject.toJSONString(CommonResult.failed(errMsg)));
+        }
+    }
+    private void noTokenResSend(ServletResponse response) throws IOException {
+        noTokenResSend(response,null);
     }
 }
