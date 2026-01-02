@@ -1,0 +1,17 @@
+ignore:
+  noLog: # 不需要token访问的路径
+    - "/doc.html"
+    - "/swagger-resources/**"
+    - "/swagger/**"
+    - "/**/v2/api-docs"
+    - "/**/*.js"
+    - "/**/*.css"
+    - "/**/*.png"
+    - "/**/*.ico"
+    - "/**/*.jpg"
+    - "/sms/admin/login/**"
+    - "/test/**" # 测试用接口 生产环境注释
+  whiteList: # 要token但是不用权限的路径
+    - "/sms/admin/get/adminLogout"
+    - "/sms/admin/get/getAdminInfo"
+    - "/sms/menu/get/currentUserMenuTree"

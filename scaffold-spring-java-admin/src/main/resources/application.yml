@@ -1,0 +1,39 @@
+server:
+  port: 8000
+  forward-headers-strategy: NATIVE
+  tomcat:
+    remote-ip-header: X-Forwarded-For
+    protocol-header: X-Forwarded-Proto
+
+spring:
+  application:
+    name: scaffold-spring-java-admin
+  profiles:
+    active: druid,ignore,jwt
+  servlet:
+    multipart:
+      max-file-size: 10MB # 设置单个文件的最大尺寸
+      max-request-size: 30MB # 设置整个multipart请求的最大尺寸
+  security:
+    user:
+      name: admin
+      password: "123456789987654321"
+      roles: ADMIN
+
+
+
+mybatis-plus:
+  type-aliases-package: top.potat.spring.admin.dao
+  mapper-locations: classpath:/dao/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+
+logging:
+  level:
+    top.potat.spring.db.mapper: debug
+    top.potat.spring.db.service: debug
+    top.potat.spring.admin: debug
+
+
+

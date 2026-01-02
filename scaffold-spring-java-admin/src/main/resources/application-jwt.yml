@@ -1,0 +1,3 @@
+jwt:
+  secret: 7xP2MW6bJS820TlWpaiRyyJnIfFMchwReEq2nXtnTTk= # 密钥
+  expiration: 604800 # 默认7天

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.potat.spring.admin.dao.SmsRoleResourceDao">
+
+    <!--批量新增角色和资源Api对应关系-->
+    <insert id="insertMenuResourceList">
+        insert into sms_menu_resource_relation
+        (menu_id, resource_id) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.menuId},#{item.resourceId})
+        </foreach>
+    </insert>
+
+
+    <!-- 批量新增管理员关联角色的对应关系 -->
+    <insert id="insertAdminRoleList">
+        insert into sms_member_role_relation
+        (member_id, role_id,relation_type) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.memberId},#{item.roleId},#{item.relationType})
+        </foreach>
+    </insert>
+
+
+    <!--批量新增角色和菜单的关联关系-->
+    <insert id="insertRoleMenuIdList">
+        insert into sms_role_menu_relation
+        (role_id, menu_id) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleId},#{item.menuId})
+        </foreach>
+    </insert>
+
+
+
+</mapper>
